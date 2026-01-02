@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Search Console - Performance</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+
+    <!-- Material Icons -->
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  </head>
+  <body data-page="performance">
+    <div id="gscLoadingBar" class="gsc-loading-bar"></div>
+    <div id="gscLoadingOverlay" class="gsc-loading-overlay"></div>
+
+    <div class="gsc-app d-flex">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="gsc-sidebar d-flex flex-column">
+        <div
+          class="gsc-sidebar-header d-flex align-items-center justify-content-between mb-3"
+        >
+          <button
+            class="btn btn-link d-lg-none p-0 me-2"
+            id="closeSidebarBtn"
+            aria-label="Close sidebar"
+          >
+            <span class="material-icons">close</span>
+          </button>
+          <img
+            src="images/logo_search_console.svg"
+            class="img-fluid"
+            style="width: 230px"
+          />
+        </div>
+
+        <nav class="gsc-nav flex-grow-1">
+          <div class="p-2">
+            <div class="gsc-property-selector position-relative">
+              <button
+                class="btn btn-light border rounded-pill gsc-property-btn d-flex align-items-center gap-2"
+                id="propertyBtn"
+              >
+                <span class="material-icons">search</span>
+                <span id="selectedPropertyLabel">Search property</span>
+                <span class="material-icons">arrow_drop_down</span>
+              </button>
+
+              <div
+                class="gsc-property-dropdown shadow"
+                id="propertyDropdown"
+              ></div>
+            </div>
+          </div>
+
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="index.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">analytics</span>
+                Overview
+              </a>
+            </li>
+
+            <li>
+              <a href="performance.html" class="gsc-nav-item active">
+                <span class="material-icons gsc-nav-icon">show_chart</span>
+                Performance
+              </a>
+            </li>
+
+            <li>
+              <a href="url_inspection.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">link</span> URL
+                inspection
+              </a>
+            </li>
+          </ul>
+
+          <div class="gsc-nav-section-label">Indexing</div>
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="pages.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">article</span> Pages
+              </a>
+            </li>
+            <li>
+              <a href="video_pages.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">image</span> Video
+                pages
+              </a>
+            </li>
+            <li>
+              <a href="sitemaps.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">book</span> Sitemaps
+              </a>
+            </li>
+          </ul>
+
+          <div class="gsc-nav-section-label">Experience</div>
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="core_web_vitals.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">speed</span> Core Web
+                Vitals
+              </a>
+            </li>
+          </ul>
+
+          <div class="gsc-nav-section-label">Security & Manual Actions</div>
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="security_issues.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">security</span>
+                Security issues
+              </a>
+            </li>
+          </ul>
+
+          <div class="gsc-nav-section-label">Legacy tools</div>
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="legacy_tools.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">build</span> Legacy
+                tools
+              </a>
+            </li>
+          </ul>
+
+          <div class="gsc-nav-section-label">Settings</div>
+          <ul class="list-unstyled m-0">
+            <li>
+              <a href="settings.html" class="gsc-nav-item">
+                <span class="material-icons gsc-nav-icon">settings</span>
+                Settings
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="gsc-sidebar-footer small text-muted">
+          © 2025 Google Clone – Demo UI
+        </div>
+      </aside>
+
+      <!-- Main area -->
+      <div class="gsc-main flex-grow-1 d-flex flex-column">
+        <!-- Top bar -->
+        <header class="gsc-topbar">
+          <button class="btn gsc-sidebar-toggle d-lg-none" id="openSidebarBtn">
+            <span class="material-icons">menu</span>
+          </button>
+
+          <div class="gsc-center-search">
+            <div class="gsc-search-box">
+              <span class="material-icons search-icon">search</span>
+              <input
+                id="inspectInput"
+                type="text"
+                placeholder='Inspect any URL in "https://printaaja.com/"'
+              />
+            </div>
+          </div>
+
+          <div class="gsc-right-icons">
+            <span class="material-icons gsc-top-icon">help_outline</span>
+            <span class="material-icons gsc-top-icon">notifications_none</span>
+            <span class="material-icons gsc-top-icon">settings</span>
+            <span class="material-icons gsc-top-icon" title="Export">download</span>
+            <div class="gsc-avatar">K</div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <main class="gsc-content flex-grow-1">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Performance</h5>
+            <div class="dropdown">
+              <button
+                class="btn btn-sm btn-outline-secondary dropdown-toggle gsc-export-btn"
+                type="button"
+                id="exportDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="material-icons" style="font-size: 16px"
+                  >download</span
+                >
+                Export
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                <li>
+                  <a class="dropdown-item" href="#" data-export="csv"
+                    >Download CSV</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-export="excel"
+                    >Download Excel</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#" data-export="google-sheets"
+                    >Open in Google Sheets</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Performance Header moved up -->
+          <div class="gsc-performance-header d-flex align-items-center justify-content-between gap-3 mb-3">
+            <div class="d-flex align-items-center gap-3">
+              <!-- TIME RANGE SINGLE PILL -->
+              <div class="gsc-time-pill">
+                <button class="gsc-time-pill-btn active" data-value="24hours">
+                  24 hours
+                </button>
+                <span class="gsc-time-separator"></span>
+                <button class="gsc-time-pill-btn" data-value="7days">
+                  7 days
+                </button>
+                <span class="gsc-time-separator"></span>
+                <button class="gsc-time-pill-btn" data-value="28days">
+                  28 days
+                </button>
+                <span class="gsc-time-separator"></span>
+                <button class="gsc-time-pill-btn" data-value="3months">
+                  3 months
+                </button>
+                <span class="gsc-time-separator"></span>
+                <button
+                  class="gsc-time-pill-btn"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#dateRangeModal"
+                >
+                  More
+                </button>
+              </div>
+
+              <!-- Search Type Filter -->
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle gsc-search-type-btn"
+                  type="button"
+                  id="searchTypeDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Search type: Web
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="searchTypeDropdown">
+                  <li>
+                    <a class="dropdown-item active" href="#" data-value="web"
+                      >Web</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-value="image">Image</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-value="video">Video</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="#" data-value="news">News</a>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Filter By Dropdown -->
+              <div class="dropdown">
+                <button
+                  class="btn btn-outline-secondary dropdown-toggle gsc-filter-by-btn"
+                  type="button"
+                  id="filterByDropdown"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Filter by
+                </button>
+                <ul
+                  class="dropdown-menu gsc-filter-by-dropdown"
+                  ariad-labelledby="filterByDropdown"
+                >
+                  <li>
+                    <a
+                      class="dropdown-item gsc-filter-option"
+                      href="#"
+                      data-value="query"
+                      >Query</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item gsc-filter-option"
+                      href="#"
+                      data-value="page"
+                      >Page</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item gsc-filter-option"
+                      href="#"
+                      data-value="country"
+                      >Country</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item gsc-filter-option"
+                      href="#"
+                      data-value="device"
+                      >Device</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item gsc-filter-option"
+                      href="#"
+                      data-value="search_appearance"
+                      >Search appearance</a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Reset Filters Button -->
+              <button class="btn btn-outline-secondary" id="resetFiltersBtn">
+                Reset filters
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Last Updated Time on the right -->
+          <div class="d-flex justify-content-end mb-3">
+            <small class="text-muted" id="lastUpdateTime">Last updated: Just now</small>
+          </div>
+
+          <!-- Scrollable content below the performance header -->
+          <div class="gsc-scrollable-content">
+            <div class="stats-row">
+    <div class="stat-box blue active gsc-metric-card" data-filter="clicks">
+      <div class="top">
+        <label>
+          <input type="checkbox" class="stat-toggle" checked />
+          <span>Total clicks</span>
+        </label>
+      </div>
+      <div class="value">0</div>
+      <div class="help">?</div>
+    </div>
+
+    <div class="stat-box purple active gsc-metric-card" data-filter="impressions">
+      <div class="top">
+        <label>
+          <input type="checkbox" checked />
+          <span>Total impressions</span>
+        </label>
+      </div>
+      <div class="value">0</div>
+      <div class="help">?</div>
+    </div>
+
+    <div class="stat-box green active gsc-metric-card" data-filter="ctr">
+      <div class="top">
+        <label>
+          <input type="checkbox" checked />
+          <span>Average CTR</span>
+        </label>
+      </div>
+      <div class="value">0%</div>
+      <div class="help">?</div>
+    </div>
+
+    <div class="stat-box orange active gsc-metric-card" data-filter="position">
+      <div class="top">
+        <label>
+          <input type="checkbox" checked />
+          <span>Average position</span>
+        </label>
+      </div>
+      <div class="value">0</div>
+      <div class="help">?</div>
+    </div>
+    <div class="d-flex align-items-center ms-3">
+      <select
+        class="granularity form-select form-select-sm"
+        style="width: auto"
+      >
+        <option>Daily</option>
+        <option>hourly</option>
+        <option>Weekly</option>
+        <option>Monthly</option>
+      </select>
+    </div>
+  </div>
+
+              <div class="performance-graph">
+                <canvas
+                  id="performanceClicksChart"
+                  width="710"
+                  height="400"
+                ></canvas>
+              </div>
+
+              <!-- Dimension Tabs -->
+              <div class="gsc-dimension-tabs d-flex gap-0 mt-4 border-bottom">
+                <button
+                  class="gsc-dimension-tab active"
+                  data-dimension="queries"
+                >
+                  <span class="tab-label">Queries</span>
+                </button>
+                <button class="gsc-dimension-tab" data-dimension="pages">
+                  <span class="tab-label">Pages</span>
+                </button>
+                <button class="gsc-dimension-tab" data-dimension="countries">
+                  <span class="tab-label">Countries</span>
+                </button>
+                <button class="gsc-dimension-tab" data-dimension="devices">
+                  <span class="tab-label">Devices</span>
+                </button>
+                <button
+                  class="gsc-dimension-tab"
+                  data-dimension="search_appearance"
+                >
+                  <span class="tab-label">Search appearance</span>
+                </button>
+                <button class="gsc-dimension-tab" data-dimension="days">
+                  <span class="tab-label">Days</span>
+                </button>
+              </div>
+
+              <!-- Data Table -->
+              <div class="gsc-data-table-container mt-3">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-3"
+                >
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted small"
+                      >Showing top 1000 results</span
+                    >
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <button
+                      class="btn btn-sm btn-outline-secondary gsc-filter-btn"
+                    >
+                      <span class="material-icons" style="font-size: 16px"
+                        >filter_list</span
+                      >
+                      Filter
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="gsc-table" id="performanceTable">
+                    <thead>
+                      <tr>
+                        <th class="sortable" data-column="query">
+                          <div
+                            class="d-flex align-items-center justify-content-between"
+                          >
+                            <span>Query</span>
+                            <span
+                              class="sort-icon material-icons"
+                              style="font-size: 16px"
+                              >unfold_more</span
+                            >
+                          </div>
+                        </th>
+                        <th class="sortable active desc" data-column="clicks">
+                          <div
+                            class="d-flex align-items-center justify-content-between"
+                          >
+                            <span>Clicks</span>
+                            <span
+                              class="sort-icon material-icons"
+                              style="font-size: 16px"
+                              >arrow_downward</span
+                            >
+                          </div>
+                        </th>
+                        <th class="sortable" data-column="impressions">
+                          <div
+                            class="d-flex align-items-center justify-content-between"
+                          >
+                            <span>Impressions</span>
+                            <span
+                              class="sort-icon material-icons"
+                              style="font-size: 16px"
+                              >unfold_more</span
+                            >
+                          </div>
+                        </th>
+                        <th class="sortable" data-column="ctr">
+                          <div
+                            class="d-flex align-items-center justify-content-between"
+                          >
+                            <span>CTR</span>
+                            <span
+                              class="sort-icon material-icons"
+                              style="font-size: 16px"
+                              >unfold_more</span
+                            >
+                          </div>
+                        </th>
+                        <th class="sortable" data-column="position">
+                          <div
+                            class="d-flex align-items-center justify-content-between"
+                          >
+                            <span>Position</span>
+                            <span
+                              class="sort-icon material-icons"
+                              style="font-size: 16px"
+                              >unfold_more</span
+                            >
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody id="performanceTableBody">
+                      <!-- Table rows will be populated by JavaScript -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div> <!-- End of gsc-scrollable-content -->
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Date Range Modal -->
+    <div
+      class="modal fade gsc-date-range-modal"
+      id="dateRangeModal"
+      tabindex="-1"
+      aria-labelledby="dateRangeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="dateRangeModalLabel">Date range</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <ul class="nav nav-tabs" id="dateRangeTabs" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="filter-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#filter"
+                  type="button"
+                  role="tab"
+                  aria-controls="filter"
+                  aria-selected="true"
+                >
+                  Filter
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="compare-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#compare"
+                  type="button"
+                  role="tab"
+                  aria-controls="compare"
+                  aria-selected="false"
+                >
+                  Compare
+                </button>
+              </li>
+            </ul>
+            <div class="tab-content mt-3" id="dateRangeTabsContent">
+              <div
+                class="tab-pane fade show active"
+                id="filter"
+                role="tabpanel"
+                aria-labelledby="filter-tab"
+              >
+                <div class="gsc-date-range-options">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="dateRange"
+                      id="last6months"
+                      value="6months"
+                      checked
+                    />
+                    <label class="form-check-label" for="last6months">
+                      Last 6 months
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="dateRange"
+                      id="last12months"
+                      value="12months"
+                    />
+                    <label class="form-check-label" for="last12months">
+                      Last 12 months
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="dateRange"
+                      id="last16months"
+                      value="16months"
+                    />
+                    <label class="form-check-label" for="last16months">
+                      Last 16 months
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="dateRange"
+                      id="custom"
+                      value="custom"
+                    />
+                    <label class="form-check-label" for="custom">
+                      Custom
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="gsc-custom-date-range mt-3"
+                  id="customDateRange"
+                  style="display: none"
+                >
+                  <div class="row g-2">
+                    <div class="col-md-6">
+                      <label for="startDate" class="form-label"
+                        >Start date</label
+                      >
+                      <div class="input-group">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="startDate"
+                          name="startDate"
+                        />
+                        <span class="input-group-text"
+                          ><span class="material-icons"
+                            >calendar_today</span
+                          ></span
+                        >
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="endDate" class="form-label">End date</label>
+                      <div class="input-group">
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="endDate"
+                          name="endDate"
+                        />
+                        <span class="input-group-text"
+                          ><span class="material-icons"
+                            >calendar_today</span
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="compare"
+                role="tabpanel"
+                aria-labelledby="compare-tab"
+              >
+                <p class="text-muted">Compare functionality coming soon...</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button type="button" class="btn btn-primary" id="applyDateRange">
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="js/script.js"></script>
+  </body>
+</html>
